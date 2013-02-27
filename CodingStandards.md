@@ -1,3 +1,4 @@
+----------------------------------------
 # GENERAL
 ----------------------------------------
 #### OPERATORS
@@ -224,6 +225,7 @@ For example, if a header prefix looks like the following:
     #import <UIKit/UIKit.h>
 #endif
 ```
+
 ------------------------------------
 ## PROPERTIES
 ------------------------------------
@@ -277,6 +279,7 @@ ESPNLoadingView // Simple view that can be used in other applications
 SCAppDelegate // Application specific code
 ```
 
+------------------------------------------
 # MEMORY MANAGEMENT
 ------------------------------------------
 
@@ -294,6 +297,7 @@ If you are returning a method you need to release always do it as follows
 	return [view autorelease];
 }
 ```
+
 ------------------------------------------
 # LITERALS
 ------------------------------------------
@@ -334,12 +338,13 @@ should become
 NSNumber *number = @0;
 ```
 
+-----------------------------------
 # DESIGN PATTERNS
 -----------------------------------
 ## DELEGATES
 
 ## BLOCKS
 
-# SETTERS
+## SETTERS
 
 
