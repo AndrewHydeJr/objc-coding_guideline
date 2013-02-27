@@ -238,6 +238,21 @@ For example, if a header prefix looks like the following:
 
 Properties should **only** be used in the .h file when it is necessary for a parent class to set/get the data. 
 
+**NEVER** allocate directly into a property. Always create a temporary variable to place it in.
+
+```objective-c
+//BAD
+self.property = [[UIView alloc]init];
+
+//BETTER (ACCEPTABLE IF YOU ARE NOT IN A LOOP)
+self.property = [[[UIView alloc]init]autorelease];
+
+//BEST (IF YOU ARE IN A LOOP, ALWAYS USE THIS MANNER)
+UIView *view = [[UIView alloc]init];
+self.property = view;
+[view release];
+
+```
 
 ## PRIVATE METHODS AND PROPERTIES
 
@@ -346,5 +361,9 @@ NSNumber *number = @0;
 ## BLOCKS
 
 ## SETTERS
+
+## ViewWithTag
+
+
 
 
