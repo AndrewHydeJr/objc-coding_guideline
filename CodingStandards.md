@@ -16,15 +16,15 @@ The `++`, `--`, etc are preferred to be after the variable instead of before to 
 
 ```objective-c
 typedef enum {
-    LSStyleNone = -1,
-    LSStyleLight = 0,
-    LSStyleDark = 1,
+    LSStyleNone,
+    LSStyleLight,
+    LSStyleDark,
 } LSStyle;
 
 ```
 
 **Always** have a None enumeration.
-**Always** have None be first, and equal to -1.
+**Always** have None be first.
 
 #### METHODS
 
@@ -59,7 +59,7 @@ An excerpt of a UIView:
 #pragma mark - 
 #pragma mark NSOBJECT
 
-- (void)dealloc 
+-(void)dealloc 
 {
     // Release
     [super dealloc];
@@ -68,12 +68,12 @@ An excerpt of a UIView:
 #pragma mark -
 #pragma mark UIVIEW
 
-- (id)layoutSubviews 
+-(id)layoutSubviews 
 {
     // Stuff
 }
 
-- (void)drawRect:(CGRect)rect 
+-(void)drawRect:(CGRect)rect 
 {
     // Drawing code
 }
@@ -89,7 +89,7 @@ Pragma marks that are not separating the class or superclass methods should conf
 #pragma mark UISCROLLVIEW DELEGATE //replace SCROLLVIEW with any delegate
 ```
 
-
+----------------------------------------
 # CONTROL STRUCTURES
 ----------------------------------------
 #### IF/ELSE
@@ -97,11 +97,11 @@ Pragma marks that are not separating the class or superclass methods should conf
 There should **always** be a space after the control structure (i.e. `if`, `else`, etc).
 
 ```objective-c
-if (button.enabled) 
+if(button.enabled) 
 {
     // Stuff
 } 
-else if (otherButton.enabled) 
+else if(otherButton.enabled) 
 {
     // Other stuff
 } 
@@ -114,7 +114,7 @@ else
 `else` statements should begin on next line as their preceding `if` statement.
     
 ```objective-c
-if (something) 
+if(something) 
 {
     // Do stuff
 }
@@ -129,7 +129,7 @@ If there is only one line of code you wish to execute in an `if` or an `else` do
 #### SWITCH
 
 ```objective-c
-switch (something.state) 
+switch(something.state) 
 {
     case 0: 
     {
@@ -181,13 +181,13 @@ __block NSObject *object = nil;
 If, for some reason, C-style for loops must be used, use the following conventions.
 
 ```objective-c
-for (NSInteger i = 0; i < 10; i++) 
+for(NSInteger i = 0; i < 10; i++) 
 {
     // Do something
 }
 
 
-for (NSString *key in dictionary) 
+for(NSString *key in dictionary) 
 {
     // Do something
 }
@@ -204,7 +204,7 @@ NSArray *array = [currentArray filteredArrayUsingPredicate:[NSPredicate predicat
 #### WHILE
 
 ```objective-c
-while (something < somethingElse) 
+while(something < somethingElse) 
 {
     // Do something
 }
@@ -224,7 +224,7 @@ For example, if a header prefix looks like the following:
     #import <UIKit/UIKit.h>
 #endif
 ```
-
+------------------------------------
 ## PROPERTIES
 ------------------------------------
 
@@ -294,7 +294,7 @@ If you are returning a method you need to release always do it as follows
 	return [view autorelease];
 }
 ```
-
+------------------------------------------
 # LITERALS
 ------------------------------------------
 
