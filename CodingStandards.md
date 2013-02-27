@@ -211,23 +211,8 @@ while(something < somethingElse)
 }
 ```
 
-### PREFIX
-
-Adding frameworks that are used in the majority of a project to a header prefix is preferred. If these frameworks are in the header prefix, they should **never** be imported in source files in the project. 
-
-When using core data, it is best to import the data model classes into the prefix.
-
-For example, if a header prefix looks like the following:
-
-```objective-c
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-    #import <UIKit/UIKit.h>
-#endif
-```
-
 ------------------------------------
-## PROPERTIES
+# PROPERTIES
 ------------------------------------
 
 ```objective-c
@@ -351,6 +336,25 @@ should become
 
 ```objective-c
 NSNumber *number = @0;
+```
+
+-----------------------------------
+# GENERAL
+-----------------------------------
+
+#### PREFIX
+
+Adding frameworks that are used in the majority of a project to a header prefix is preferred. If these frameworks are in the header prefix, they should **never** be imported in source files in the project. 
+
+When using core data, it is best to import the data model classes into the prefix.
+
+For example, if a header prefix looks like the following:
+
+```objective-c
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+#endif
 ```
 
 -----------------------------------
