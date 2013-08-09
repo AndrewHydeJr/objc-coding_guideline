@@ -5,6 +5,16 @@
 
 ```objective-c
 NSString *foo = @"bar";
+
+// Declaring multiple variables, put * with type for proper indentation
+NSRecursiveLock*                _lock;
+NSManagedObjectContext*         _mainThreadContext;
+NSManagedObjectContext*         _backgroundThreadContext;
+NSPersistentStoreCoordinator*   _persistentStoreCoordinator;
+NSManagedObjectModel*           _managedObjectModel;
+NSMutableArray*                 _refreshesInProgress;
+
+
 NSInteger answer = 42;
 answer += 9;
 answer++;
@@ -16,78 +26,81 @@ The `++`, `--`, etc are preferred to be after the variable instead of before to 
 #### ENUMS
 
 ```objective-c
-typedef enum {
+typedef NS_ENUM(NSUInteger, LSStyleType)
     LSStyleNone,
     LSStyleLight,
     LSStyleDark,
 } LSStyle;
 
+typedef NS_ENUM(NSUInteger, EPCatalogAutoRefreshType)
+{
+    EPAutoRefreshChannels,
+    EPAutoRefreshSports,
+    EPAutoRefreshLiveNowEvents
+};
 ```
 
-**Always** have a None enumeration.
-**Always** have None be first.
+**Always** use NS_ENUM to help with type-checking (http://nshipster.com/ns_enum-ns_options/).
+Use a None enumeration as first enumeration where it makes sense.
+
+
 
 #### METHODS
 
-All method names should be camel-case, first word lowercase, any other words have the first letter capitalized.
+* All method names should be camel-case, first word lowercase, any other words have the first letter capitalized.
+* Keep method size under a screen height
 
 ```objective-c
--(void)someMethod 
+- (void)someMethod 
 {
     // Do stuff
 }
 
--(NSString *)stringByReplacingOccurrencesOfString:(NSString *)target withString:(NSString *)replacement 
+- (NSString *)stringByReplacingOccurrencesOfString:(NSString *)target withString:(NSString *)replacement 
 {
     return nil;
 }
 ```
 
-There should **never** be a space between the `-` or `+` and the return type (`(void)` in this example). 
-There should **never** be a space between the return type and the method name.
-There should **never** be a space before or after colons. 
+* There should **always** be a space between the `-` or `+` and the return type (`(void)` in this example). 
+* There should **never** be a space between the return type and the method name.
+* There should **never** be a space before or after colons. 
+* If the parameter type is a pointer, there should **always** be a space between the class and the `*`.
+* The opening bracket should **always** be on the following line.
+* There should **always** be one new line between methods. 
 
-If the parameter type is a pointer, there should **always** be a space between the class and the `*`.
-The opening bracket should **always** be on the following line.
-There should **always** be one new line between methods. 
+##### Method Naming
+* The first phrase of the method tells the return type.
+* Make the method name read like a sentence
+* Try to make the last parameter start with `and` such as: 
+`- (NSCondition*)conditionForChannelId:(NSString*)channelId andEventType:(NSString*)eventType;`
+
+##### init Method
+* Only include parameters in the method if required
+* Create init methods where they make sense, otherwise use class methods
+* Return **instancetype** instead of **id**
+```objective-c
++ (instancetype)clientWithBaseURL:(NSURL *)url {
+    return [[self alloc] initWithBaseURL:url];
+}
+```
+
 
 
 #### PRAGMA MARK & IMPLEMENTATION
 
-An excerpt of a UIView:
-
-```objective-c
-#pragma mark - 
-#pragma mark NSOBJECT
-
--(void)dealloc 
-{
-    // Release
-    [super dealloc];
-}
-
-#pragma mark -
-#pragma mark UIVIEW
-
--(id)layoutSubviews 
-{
-    // Stuff
-}
-
--(void)drawRect:(CGRect)rect 
-{
-    // Drawing code
-}
-```
+All pragma marks should be on one line such as `#pragma mark - Life Cycle`
 
 Pragma marks that are not separating the class or superclass methods should conform but are not limited to the following:
 
 ```objective-c
-#pragma mark ACTIONS
-#pragma mark GETTERS
-#pragma mark SETTERS
-#pragma mark NOTIFICATIONS
-#pragma mark UISCROLLVIEW DELEGATE //replace SCROLLVIEW with any delegate
+#pragma mark - LIFE CYCLE //init, dealloc, etc
+#pragma mark - UTILITIES //helper and utility methods
+#pragma mark - ACTIONS
+#pragma mark - GETTERS
+#pragma mark - SETTERS
+#pragma mark - NOTIFICATIONS
+#pragma mark - UISCROLLVIEW DELEGATE //replace SCROLLVIEW with any delegate
 ```
 
 #### PREFIX
@@ -113,24 +126,24 @@ For example, if a header prefix looks like the following:
 There should **always** be a space after the control structure (i.e. `if`, `else`, etc).
 
 ```objective-c
-if(button.enabled) 
+if (button.enabled) 
 {
     // Stuff
 } 
-else if(otherButton.enabled) 
+else if (otherButton.enabled) 
 {
     // Other stuff
 } 
 else 
 {
-    // More stuf
+    // More stuff
 }
 ```
 
 `else` statements should begin on next line as their preceding `if` statement.
     
 ```objective-c
-if(something) 
+if (something) 
 {
     // Do stuff
 }
@@ -145,7 +158,7 @@ If there is only one line of code you wish to execute in an `if` or an `else` do
 #### SWITCH
 
 ```objective-c
-switch(something.state) 
+switch (something.state) 
 {
     case 0: 
     {
@@ -177,6 +190,10 @@ Brackets are desired around each case. If multiple cases are used, they should b
 #### FOR
 
 Avoid C-style for loops and instead try to stick to Objective-C enumeration of sets. Doing so keeps syntax and conventions along line with Apple's standards.
+
+**Always** use for in if you don't need the index.
+
+**Always** use enumerateObjectsUsingBlock if you need the index.
 
 In order to manipulate an object inside the enumeration, flag the object with <code>__block</code>.
 
@@ -216,6 +233,11 @@ If iterating over an array to look for a specific item, it is preferred to use N
 ```objective-c
 NSArray *array = [currentArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name == 'Jim'"]];
 ```
+
+Further enumeration reading: http://nshipster.com/enumerators/
+
+Further predicate reading: http://nshipster.com/nspredicate/
+
 
 #### WHILE
 
@@ -298,7 +320,10 @@ SCAppDelegate // Application specific code
 # MEMORY MANAGEMENT
 ------------------------------------------
 
-**Always** use Manual Reference Counting
+**Always** use Automatic Reference Counting (ARC).
+
+#### MANUAL REFERENCE COUNTING
+If you are supporting a legacy project using manual reference counting, use the following rules.
 
 If you alloc, copy, retain, new, you must release.
 
@@ -356,14 +381,34 @@ NSNumber *number = @0;
 -----------------------------------
 # DESIGN PATTERNS
 -----------------------------------
-## DELEGATES
+#### DELEGATES
+* Use delegates to be notified for user interactions
 
-## BLOCKS
+#### BLOCKS
+* Use blocks to be notified for async completion of non-user interactions
+* **Always** typedef the blocks
 
-## SETTERS
+```objective-c
+typedef void (^BlockName)(NSString *string, NSError *error)
+typedef void (^PlayerCreationCallback)(EPPlayer* player, EPPlaybackStartupResult status, NSString* failureMessage, NSError* error);
+```
 
-## ViewWithTag
+* Do not have a separate failure block in method declarations - return the error with the main completion block
+* **Always** put the block as the last method parameter
 
+#### CORE DATA
+* Don't pass around NSManagedObjects - use dictionary representations
+* Use Mogenerator for larger data models (http://rentzsch.github.io/mogenerator/)
+
+
+-----------------------------------
+# PROJECT STRUCTURE
+-----------------------------------
+* The physical file structure should follow the project folder structure
+* Organize files based on functionality not type
+* Assets should be stored in the appropriate functionality folder
+* **Always** set warnings to be reported as errors
+* **Always** run static analyzer by default on build
 
 
 
