@@ -381,16 +381,34 @@ NSNumber *number = @0;
 -----------------------------------
 # DESIGN PATTERNS
 -----------------------------------
-## DELEGATES
+#### DELEGATES
 * Use delegates to be notified for user interactions
 
-## BLOCKS
-* Use blocks to be notified for non-user interactions
+#### BLOCKS
+* Use blocks to be notified for async completion of non-user interactions
+* **Always** typedef the blocks
 
-## SETTERS
+```objective-c
+typedef void (^BlockName)(NSString *string, NSError *error)
+typedef void (^PlayerCreationCallback)(EPPlayer* player, EPPlaybackStartupResult status, NSString* failureMessage, NSError* error);
+```
 
-## ViewWithTag
+* Do not have a separate failure block in method declarations - return the error with the main completion block
+* **Always** put the block as the last method parameter
 
+#### CORE DATA
+* Don't pass around NSManagedObjects - use dictionary representations
+* Use Mogenerator for larger data models (http://rentzsch.github.io/mogenerator/)
+
+
+-----------------------------------
+# PROJECT STRUCTURE
+-----------------------------------
+* The physical file structure should follow the project folder structure
+* Organize files based on functionality not type
+* Assets should be stored in the appropriate functionality folder
+* **Always** set warnings to be reported as errors
+* **Always** run static analyzer by default on build
 
 
 
