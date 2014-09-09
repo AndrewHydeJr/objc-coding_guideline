@@ -6,14 +6,6 @@
 ```objective-c
 NSString *foo = @"bar";
 
-// Declaring multiple variables, put * with type for proper indentation
-NSRecursiveLock*                _lock;
-NSManagedObjectContext*         _mainThreadContext;
-NSManagedObjectContext*         _backgroundThreadContext;
-NSPersistentStoreCoordinator*   _persistentStoreCoordinator;
-NSManagedObjectModel*           _managedObjectModel;
-NSMutableArray*                 _refreshesInProgress;
-
 
 NSInteger answer = 42;
 answer += 9;
