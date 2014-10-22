@@ -19,6 +19,7 @@ The `++`, `--`, etc are preferred to be after the variable instead of before to 
 
 ```objective-c
 typedef NS_ENUM(NSUInteger, LSStyleType)
+{
     LSStyleNone,
     LSStyleLight,
     LSStyleDark,
@@ -72,7 +73,8 @@ Use a None enumeration as first enumeration where it makes sense.
 * Create init methods where they make sense, otherwise use class methods
 * Return **instancetype** instead of **id**
 ```objective-c
-+ (instancetype)clientWithBaseURL:(NSURL *)url {
++ (instancetype)clientWithBaseURL:(NSURL *)url 
+{
     return [[self alloc] initWithBaseURL:url];
 }
 ```
